@@ -1,102 +1,108 @@
-# 🏥 HealthCare Management System
+# 🏥 HealthCare App
 
-This is a full-stack HealthCare application built to manage appointments between patients and doctors, featuring secure login, real-time updates, and an intuitive UI.
+A full-stack Healthcare Appointment and Wellness Management System with role-based login for Doctors and Patients. Built using **React.js (Vite)**, **Firebase**, and **Node.js/Express**.
 
----
+## 🚀 Features
 
-## 🚀 Tech Stack
+### 👨‍⚕️ Doctor Module
+- Login using **Email or Name + Password**
+- View all appointments (Pending / Confirmed / Rejected)
+- Accept or reject appointment requests
+- Auto-email to patients on confirmation or rejection
 
-- **Frontend**: React.js (Ant Design)
-- **Backend**: Firebase (Auth + Firestore), optionally Flask or Express
-- **Authentication**: Firebase Auth
-- **Email Service**: EmailJS / Firebase triggers
-- **Deployment**: (Optional) Vercel / Netlify / Firebase Hosting
+### 🧑‍⚕️ Patient Module
+- Register and login using Email + Password
+- Book appointments with available doctors
+- View appointment status in real-time
+- Auto-email on updates
 
----
+### 📅 Additional Modules
+- **Events**: View upcoming health awareness campaigns (Yoga Day, World Health Day, etc.)
+- **Wellness Zone**: Self-care guides, Yoga routines, and Mental Health tips
+- **Support**: Contact help center for app-related queries
+
+## 🧑‍💻 Tech Stack
+
+### Frontend
+- React.js + Vite
+- Ant Design (UI Framework)
+- React Router
+- Firebase Auth & Firestore
+
+### Backend
+- Node.js + Express
+- Firebase Admin SDK
+- Nodemailer (for email notifications)
 
 ## 📂 Folder Structure
 
-HealthCare/
-├── Backend/ # Backend logic (Flask/Express/Firebase Functions)
-├── Frontend/ # React frontend
-│ ├── public/
-│ └── src/
-│ ├── components/
+📁 Backend/
+├── index.js
+├── sendEmail.js
+└── package.json
+
+📁 frontend/
+├── src/
 │ ├── pages/
-│ └── App.js
-├── .gitignore
-├── README.md
-└── serviceAccountKey.json # 🔒 Removed from history
+│ │ ├── Home.jsx
+│ │ ├── Login.jsx
+│ │ ├── Register.jsx
+│ │ ├── DoctorDashboard.jsx
+│ │ ├── PatientDashboard.jsx
+│ │ ├── DoctorOverview.jsx
+│ │ ├── Event.jsx
+│ │ ├── Wellness.jsx
+│ │ └── Support.jsx
+│ └── firebase.js
+└── vite.config.js
 
----
+## 🔐 Role-Based Login
 
-## 🔑 Features
+- Doctor & Patient login UI in a single screen (separated by boxes)
+- Prevents patients from accessing doctor panel and vice versa
+- Custom message: _"Invalid credentials for this role"_ when misused
 
-- Patient & Doctor login (with separate portals)
-- Book appointments (future dates only)
-- Doctors can view & accept/reject appointments
-- Email confirmation on actions
-- Firebase-secured database
-- Clean responsive UI
+## 📧 Email Notification System
 
----
+Integrated via backend (Nodemailer) for:
+- Appointment Confirmation
+- Appointment Rejection with rebooking link
 
-## 🛠️ Setup Instructions
+## 🛠️ Getting Started
+
+### 🔧 Prerequisites
+- Node.js & npm
+- Firebase project (with Authentication + Firestore)
+
+### 1. Clone the Repo
 
 ```bash
-# Clone the repository
-git clone https://github.com/NishanthGowda007/HealthCare.git
-cd HealthCare
+git clone https://github.com/yourusername/healthcare-app.git
+cd healthcare-app
 ```
 
-# Navigate to frontend and install dependencies
-cd Frontend
+### 2. Backend Setup
+
+cd Backend
 npm install
-npm start
+node index.js
+### 3. Frontend Setup
+cd frontend
+npm install
+npm run dev
+### 4. Environment Variables
+Create a .env file in frontend/ with:
 
-# For backend (if using Flask)
-cd ../Backend
-pip install -r requirements.txt
-python app.py
-Make sure to add your Firebase config and service account key securely using .env.
+VITE_FIREBASE_API_KEY=...
+VITE_FIREBASE_AUTH_DOMAIN=...
+VITE_FIREBASE_PROJECT_ID=...
 
-✅ To-Do
- Add doctor availability slots
+### 📷 Screenshots
+Coming soon: Login page, dashboard views, appointment cards
 
- Admin dashboard
+### 🤝 Contributing
+Feel free to fork the repo and submit PRs! Bug reports, feature requests, and improvements are always welcome.
 
- Email verification
+### 📃 License
+MIT License © 2025 Nishanth Gowda
 
- Responsive mobile views
-
-# 🤝 Contributing
-Pull requests are welcome. For major changes, please open an issue first.
-
-# 📜 License
-MIT © Nishanth Gowda
-
-
----
-
-## 🛑 `.gitignore` (Essential for Clean Repo)
-
-```gitignore
-# Node
-node_modules/
-npm-debug.log
-
-# React
-build/
-.env
-
-# Python
-__pycache__/
-*.pyc
-
-# Firebase
-serviceAccountKey.json
-
-# System
-.DS_Store
-Thumbs.db
-```
