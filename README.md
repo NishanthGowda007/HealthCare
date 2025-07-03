@@ -1,6 +1,3 @@
-📄 README.md (Professional & Clean)
-markdown
-Copy code
 # 🏥 HealthCare Management System
 
 This is a full-stack HealthCare application built to manage appointments between patients and doctors, featuring secure login, real-time updates, and an intuitive UI.
@@ -31,9 +28,6 @@ HealthCare/
 ├── README.md
 └── serviceAccountKey.json # 🔒 Removed from history
 
-yaml
-Copy code
-
 ---
 
 ## 🔑 Features
@@ -53,6 +47,7 @@ Copy code
 # Clone the repository
 git clone https://github.com/NishanthGowda007/HealthCare.git
 cd HealthCare
+```
 
 # Navigate to frontend and install dependencies
 cd Frontend
@@ -74,14 +69,12 @@ Make sure to add your Firebase config and service account key securely using .en
 
  Responsive mobile views
 
-🤝 Contributing
+# 🤝 Contributing
 Pull requests are welcome. For major changes, please open an issue first.
 
-📜 License
+# 📜 License
 MIT © Nishanth Gowda
 
-yaml
-Copy code
 
 ---
 
@@ -106,3 +99,4 @@ serviceAccountKey.json
 # System
 .DS_Store
 Thumbs.db
+```
