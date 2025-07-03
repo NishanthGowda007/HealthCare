@@ -110,11 +110,11 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 You can also check .env.example for reference.
 
-📷 Screenshots
+## 📷 Screenshots
 Coming soon: Login page, dashboard views, appointment cards
 
-🤝 Contributing
+## 🤝 Contributing
 Feel free to fork the repo and submit PRs! Bug reports, feature requests, and improvements are always welcome.
 
-📃 License
+## 📃 License
 MIT License © 2025 Nishanth Gowda
