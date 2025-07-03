@@ -189,7 +189,8 @@ const Wellness = () => {
                     }}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
-                    aria-label={video.title}
+                    aria-label={video.title 
+                    }
                   />
                 </div>
               </Card>
