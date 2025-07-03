@@ -63,3 +63,58 @@ A full-stack Healthcare Appointment and Wellness Management System with role-bas
 │   └── firebase.js
 ├── .env.example
 └── vite.config.js
+```
+
+##🔐 Role-Based Login
+Doctor & Patient login UI in a single screen (separated by boxes)
+
+Prevents patients from accessing doctor panel and vice versa
+
+Custom message: "Invalid credentials for this role" when misused
+
+## 📧 Email Notification System
+Integrated via backend (Nodemailer) for:
+
+Appointment Confirmation
+
+Appointment Rejection with rebooking link
+
+## 🛠️ Getting Started
+🔧 Prerequisites
+Node.js & npm
+
+## Firebase project (with Authentication + Firestore enabled)
+
+1. Clone the Repository
+git clone https://github.com/NishanthGowda007/HealthCare.git
+cd HealthCare
+
+2. Backend Setup
+cd Backend
+npm install
+node index.js
+
+3. Frontend Setup
+cd ../frontend
+npm install
+npm run dev
+
+4. Environment Variables
+Create a .env file inside frontend/ with:
+
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project
+VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+You can also check .env.example for reference.
+
+📷 Screenshots
+Coming soon: Login page, dashboard views, appointment cards
+
+🤝 Contributing
+Feel free to fork the repo and submit PRs! Bug reports, feature requests, and improvements are always welcome.
+
+📃 License
+MIT License © 2025 Nishanth Gowda
