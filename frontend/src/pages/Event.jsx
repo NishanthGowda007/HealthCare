@@ -137,8 +137,8 @@ const fadeInUp = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.15,
-      duration: 0.6,
+      delay: i * 0.05,
+      duration: 0.2,
       ease: "easeOut",
     },
   }),
@@ -155,7 +155,7 @@ const Events = () => {
         paddingBottom: "60px",
       }}
     >
-      <div style={{ maxWidth: "1350px", margin: "0 auto", padding: "0 16px" }}>
+      <div style={{ maxWidth: "1500px", margin: "0 auto", padding: "0 16px" }}>
         {/* Header - Gradient */}
         <motion.div
           initial="hidden"
@@ -175,7 +175,7 @@ const Events = () => {
             textAlign: "left",
           }}
         >
-          <Title level={2} style={{ color: "#fff", marginBottom: 0 }}>
+          <Title level={2} style={{ color: "#fff", marginBottom: 0, fontWeight: "bold" , fontSize: 28 , lineHeight: 1.2 , textAlign: "left"}}>
             <CalendarOutlined style={{ marginRight: 10 }} />
             🌐 Upcoming Global Health Events
           </Title>
@@ -206,6 +206,8 @@ const Events = () => {
                     backgroundColor: "#e6f7ff",
                     borderRadius: 12,
                     padding: "16px",
+                    maxWidth: "700px",
+                    margin: "10px auto",
                     boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
                   }}
                   hoverable

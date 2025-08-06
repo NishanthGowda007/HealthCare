@@ -414,7 +414,8 @@ const PatientDashboard = () => {
 
     try {
       setLoading(true);
-      await axios.post("http://localhost:5000/appointments", {
+      // await axios.post("http://localhost:5000/appointments", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/appointments`, {
         doctorId,
         patientId: patient.uid,
         date: date.format("YYYY-MM-DD"),

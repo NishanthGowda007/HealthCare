@@ -129,7 +129,7 @@ const Home = () => {
       <Content
         style={{
           padding: "24px 16px",
-          maxWidth: "1200px",
+          maxWidth: "1500px",
           margin: "0 auto",
           width: "100%",
         }}

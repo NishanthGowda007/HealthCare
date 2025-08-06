@@ -79,13 +79,23 @@
 const express = require("express");
 const cors = require("cors");
 const admin = require("firebase-admin");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Use environment variable for Firebase credentials
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+let serviceAccount;
+
+if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  // 🟢 Render
+  serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+} else {
+  // 🟡 Local
+  const localPath = path.join(__dirname, "../serviceAccountKey.json");
+  serviceAccount = require(localPath);
+}
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -96,7 +106,6 @@ const db = admin.firestore();
 app.post("/appointments", async (req, res) => {
   try {
     const { doctorId, patientId, date, time, status } = req.body;
-
     if (!doctorId || !patientId || !date || !time) {
       return res.status(400).send("Missing fields");
     }
@@ -151,10 +160,10 @@ app.post("/appointments/:id/reject", async (req, res) => {
   }
 });
 
-// 🔁 Include email route if needed
+// 🔁 Include email route if used
 const sendEmailRoute = require("./sendEmail");
 app.use("/send-email", sendEmailRoute);
 
-// ✅ Use Render-assigned port in production
+// ✅ Support Render dynamic port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

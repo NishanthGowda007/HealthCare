@@ -336,8 +336,12 @@ import {
   Dropdown,
   Avatar,
 } from "antd";
-import { CalendarOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
-import { getAuth, signOut } from "firebase/auth";
+import {
+  CalendarOutlined,
+  UserOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
 import { db } from "../firebase";
 import { getDocs, query, collection, where } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
@@ -350,10 +354,22 @@ const DoctorDashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [doctorInfo, setDoctorInfo] = useState(null);
+  const [doctor, setDoctor] = useState(null);
 
   const auth = getAuth();
-  const doctor = auth.currentUser;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setDoctor(user);
+      } else {
+        navigate("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const fetchDoctorInfo = async () => {
     if (!doctor) return;
@@ -373,8 +389,8 @@ const DoctorDashboard = () => {
     setLoading(true);
 
     try {
-      const res = await axios.get(`http://localhost:5000/appointments/${doctor.uid}`);
-
+      // const res = await axios.get(`http://localhost:5000/appointments/${doctor.uid}`);
+      const res = await axios.get(`${process.env.REACT_APP_API_URL}/appointments/${doctor.uid}`);
       const enriched = await Promise.all(
         res.data.map(async (item) => {
           let patientName = "Unknown";
@@ -384,7 +400,6 @@ const DoctorDashboard = () => {
             if (item.patientId) {
               const q = query(collection(db, "users"), where("uid", "==", item.patientId));
               const userSnap = await getDocs(q);
-
               if (!userSnap.empty) {
                 const data = userSnap.docs[0].data();
                 patientName = data.name || "Unknown";
@@ -403,16 +418,19 @@ const DoctorDashboard = () => {
     } catch (err) {
       console.error("Error fetching appointments:", err);
       message.error("Unable to load appointments.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const handleAction = async (id, action, item) => {
     try {
-      await axios.post(`http://localhost:5000/appointments/${id}/${action}`);
+      // await axios.post(`http://localhost:5000/appointments/${id}/${action}`);
+      await axios.post(`${process.env.REACT_APP_API_URL}/appointments/${id}/${action}`);
 
-      await axios.post("http://localhost:5000/send-email", {
+
+      // await axios.post("http://localhost:5000/send-email", {
+      await axios.post(`${process.env.REACT_APP_API_URL}/send-email`, {
         to: item.patientEmail,
         subject: `Appointment ${action === "confirm" ? "Confirmed" : "Rejected"}`,
         html: `
@@ -422,8 +440,8 @@ const DoctorDashboard = () => {
             </h2>
             <p>Hello <b>${item.patientName}</b>,</p>
             <p>Your appointment on <b>${item.date}</b> at <b>${item.time}</b> has been <b>${
-        action === "confirm" ? "confirmed" : "rejected"
-      }</b> by the doctor.</p>
+          action === "confirm" ? "confirmed" : "rejected"
+        }</b> by the doctor.</p>
             ${
               action === "reject"
                 ? `<p>Please <a href="http://localhost:5173/login" style="color:#1677ff;">click here to rebook</a> at your convenience.</p>`
@@ -484,7 +502,7 @@ const DoctorDashboard = () => {
 
   return (
     <Layout style={{ minHeight: "100vh", width: "100vw", background: "#f0f2f5" }}>
-      {/* Animated Header with proper layout */}
+      {/* Animated Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -494,9 +512,9 @@ const DoctorDashboard = () => {
           padding: "24px",
           marginTop: 20,
           marginBottom: 40,
-          marginLeft: "10px",
-          marginRight: "10px",
-          borderRadius:20,
+          marginLeft: "20px",
+          marginRight: "20px",
+          borderRadius: 20,
           color: "#fff",
           display: "flex",
           boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
@@ -506,7 +524,7 @@ const DoctorDashboard = () => {
       >
         <div style={{ display: "flex", alignItems: "center" }}>
           <CalendarOutlined style={{ marginRight: 10, fontSize: 20 }} />
-          <Title level={3} style={{ color: "#fff", margin: 0 }}>
+          <Title level={2} style={{ color: "#fff", margin: 0 }}>
             Doctor Dashboard
           </Title>
         </div>
@@ -538,7 +556,9 @@ const DoctorDashboard = () => {
           </Title>
 
           {loading ? (
-            <Skeleton active paragraph={{ rows: 6 }} />
+            <div style={{ display: "flex", justifyContent: "center", padding: "40px 0" }}>
+              <Skeleton active paragraph={{ rows: 6 }} style={{ width: "80%" }} />
+            </div>
           ) : (
             <List
               dataSource={appointments}
@@ -580,7 +600,7 @@ const DoctorDashboard = () => {
                               onClick={() => handleAction(item.id, "confirm", item)}
                               block
                             >
-                              ~Confirm
+                              Confirm
                             </Button>
                             <Button
                               danger

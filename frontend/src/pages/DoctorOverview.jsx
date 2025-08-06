@@ -236,6 +236,7 @@
 // );
 
 // export default DoctorOverview;
+
 import React, { useEffect, useState } from "react";
 import {
   Select,
@@ -248,7 +249,7 @@ import {
   Tag,
   Button,
 } from "antd";
-import { HomeOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -325,7 +326,7 @@ const DoctorOverview = () => {
     } catch (err) {
       message.error("Error fetching appointments");
     }
-    setLoading(false);
+    setTimeout(() => setLoading(false), 400); // Prevent flash
   };
 
   const handleDoctorChange = (doctorId) => {
@@ -343,7 +344,7 @@ const DoctorOverview = () => {
         paddingBottom: "60px",
       }}
     >
-      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 16px" }}>
+      <div style={{ maxWidth: "1500px", margin: "0 auto", padding: "0 16px" }}>
         {/* Gradient Header */}
         <div
           style={{
@@ -366,14 +367,21 @@ const DoctorOverview = () => {
         </div>
 
         {/* Doctor Selection */}
-        <div style={{ marginBottom: 30, textAlign: "center" }}>
+        <div
+          style={{
+            marginBottom: 40,
+            textAlign: "center",
+            marginTop: 20,
+            alignItems: "center",
+          }}
+        >
           <Text strong>Select Doctor</Text>
           <br />
           <Select
             placeholder="Choose Doctor by Name"
             style={{
               width: "100%",
-              maxWidth: "400px",
+              maxWidth: "800px",
               marginTop: 10,
             }}
             onChange={handleDoctorChange}
@@ -396,6 +404,7 @@ const DoctorOverview = () => {
               backgroundColor: "#f0f5ff",
               border: "1px solid #adc6ff",
               color: "#2f54eb",
+              fontSize: 16,
               fontWeight: 600,
               borderRadius: 8,
             }}
@@ -404,7 +413,7 @@ const DoctorOverview = () => {
           </Button>
         </div>
 
-        {/* Appointment Tabs */}
+        {/* Conditional rendering for content */}
         {loading ? (
           <div
             style={{
@@ -414,26 +423,24 @@ const DoctorOverview = () => {
               minHeight: "200px",
             }}
           >
-            <Spin size="large" />
+            <Spin size="large" tip="Loading appointments..." />
           </div>
+        ) : selectedDoctor ? (
+          <Tabs defaultActiveKey="pending" centered style={{ marginTop: 30 }}>
+            <TabPane tab=" Pending" key="pending">
+              <AppointmentList data={appointments.pending || []} />
+            </TabPane>
+            <TabPane tab=" Confirmed" key="confirmed">
+              <AppointmentList data={appointments.confirmed || []} />
+            </TabPane>
+            <TabPane tab=" Rejected" key="rejected">
+              <AppointmentList data={appointments.rejected || []} />
+            </TabPane>
+          </Tabs>
         ) : (
-          selectedDoctor && (
-            <Tabs
-              defaultActiveKey="pending"
-              centered
-              style={{ marginTop: 30 }}
-            >
-              <TabPane tab=" Pending" key="pending">
-                <AppointmentList data={appointments.pending || []} />
-              </TabPane>
-              <TabPane tab=" Confirmed" key="confirmed">
-                <AppointmentList data={appointments.confirmed || []} />
-              </TabPane>
-              <TabPane tab=" Rejected" key="rejected">
-                <AppointmentList data={appointments.rejected || []} />
-              </TabPane>
-            </Tabs>
-          )
+          <div style={{ textAlign: "center", marginTop: 40, color: "#888" }}>
+            <Text>Please select a doctor to view their appointments.</Text>
+          </div>
         )}
       </div>
     </div>
